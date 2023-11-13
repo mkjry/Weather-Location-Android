@@ -1,14 +1,20 @@
 package com.ssj.weather_location_android.view
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +46,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if(!checkPermissions()) {
+            requestPermission()
+        }
+
         val repository = WeatherRepository()
         weatherViewModel = ViewModelProvider(this, WeatherViewModelFactory(repository)).get(WeatherViewModel::class.java)
         weatherViewModel.weatherData.observe(this, Observer { weatherResponse ->
@@ -55,8 +65,7 @@ class MainActivity : AppCompatActivity() {
         // EditBox event > trigger api call by city name
         binding.etGetCityName.setOnEditorActionListener { v, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
-                weatherViewModel.getCityWeatherData(binding.etGetCityName.text.toString()) // api call by city_name
+                beginApiWeatherDataCall()
 
                 val view = this.currentFocus
                 if (view != null) {
@@ -69,13 +78,85 @@ class MainActivity : AppCompatActivity() {
             } else false
         }
 
+        binding.refreshButton.setOnClickListener {
+            beginApiWeatherDataCall()
+        }
+
         // auto-load previous searched city, when open app
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         city = sharedPreferences.getString(CITY, "").toString()
         if (city.isNotEmpty()) {
             weatherViewModel.getCityWeatherData(city)
         }
-//        weatherViewModel.getWeather(35.156, -106.5392) // api call by latitude, longitude value
+
+    }
+
+    private fun beginApiWeatherDataCall() {
+        if (checkPermissions()) {
+
+            if (isLocationEnabled()) {
+
+                // final latitude and longitude code here
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermission()
+                    return
+                }
+            } else {
+                // open setting
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_SHORT).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            }
+
+        } else {
+            finishAffinity()
+        }
+
+            // api call by city_name
+            weatherViewModel.getCityWeatherData(binding.etGetCityName.text.toString())
+
+             // api call by latitude, longitude value
+//            weatherViewModel.getWeather(35.156, -106.5392)
+        }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ), PERMISSION_REQUEST_ACCESS_LOCATION
+        )
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_ACCESS_LOCATION = 100
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            return true
+        }
+        return false
     }
 
     override fun onPause() {
