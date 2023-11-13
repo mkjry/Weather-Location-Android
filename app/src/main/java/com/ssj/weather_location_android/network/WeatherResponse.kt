@@ -1,18 +1,20 @@
 package com.ssj.weather_location_android.network
 
 import com.google.gson.annotations.SerializedName
+import com.ssj.weather_location_android.model.Coord
 import com.ssj.weather_location_android.model.Main
 import com.ssj.weather_location_android.model.Sys
 import com.ssj.weather_location_android.model.Weather
 import com.ssj.weather_location_android.model.Wind
 
 data class WeatherResponse(
+    @SerializedName("coord") val coord:Coord,
     @SerializedName("weather") val weather:List<Weather>,
     @SerializedName("main") val main: Main,
     @SerializedName("wind") val wind: Wind,
     @SerializedName("sys") val sys: Sys,
     @SerializedName("id") val id:Int,
-    @SerializedName("name") val name:String
+    @SerializedName("name") val name:String,
 )
 
 /*

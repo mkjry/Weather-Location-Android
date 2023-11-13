@@ -19,6 +19,8 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     val weatherData: MutableLiveData<WeatherResponse?> get() = _weatherData
 
     fun getWeather(lat: Double, lon: Double) {
+
+        Log.i("last", lat.toString() + " " + lon.toString())
         viewModelScope.launch {
             Dispatchers.IO
             val response: WeatherResponse =
@@ -45,7 +47,9 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                 if (response.isSuccessful) {
                     _weatherData.value = response.body()
                     _weatherData.postValue(weatherData.value)
+                    Log.i("API",response.body().toString())
                 } else {
+                    _weatherData.postValue(null)
                     // Handle API error
                     Log.e("API Error", "Error: ${response.code()}")
                 }
