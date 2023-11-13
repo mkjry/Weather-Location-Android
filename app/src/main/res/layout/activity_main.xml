@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="weatherData"
+            type="com.ssj.weather_location_android.viewmodel.WeatherViewModel" />
     </data>
 
     <RelativeLayout
@@ -156,8 +158,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="3"
-                                android:fontFamily="@font/google_sans_medium"
-                                android:text="@string/day"
+                                android:fontFamily="@string/day"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/text_large" />
 
@@ -274,7 +275,6 @@
                                 <androidx.appcompat.widget.LinearLayoutCompat
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
                                     android:orientation="vertical"
                                     android:padding="@dimen/padding_x_small"
                                     tools:ignore="UselessParent">
