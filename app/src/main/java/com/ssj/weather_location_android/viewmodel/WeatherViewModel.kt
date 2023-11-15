@@ -28,13 +28,21 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                     .getWeather(lat, lon, APPID)
 
             if (response.weather.isNotEmpty()) {
-                _weatherData.value = response
+//                _weatherData.value = response
+                _weatherData.value = customizeValues(response)
                 _weatherData.postValue(weatherData.value)
             } else {
                 _weatherData.postValue(null)
             }
             return@launch
         }
+    }
+
+    private fun customizeValues(response: WeatherResponse): WeatherResponse? {
+
+        // TODO: adjust data to databind on layout xml
+        // Kelvin to Celsious ..
+        return response
     }
 
     fun getCityWeatherData(cityName: String) {
@@ -45,7 +53,8 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                         .getCityWeatherData(cityName, APPID)
 
                 if (response.isSuccessful) {
-                    _weatherData.value = response.body()
+//                    _weatherData.value = response.body()
+                    _weatherData.value = response.body()?.let { customizeValues(it) }
                     _weatherData.postValue(weatherData.value)
                     Log.i("API",response.body().toString())
                 } else {
