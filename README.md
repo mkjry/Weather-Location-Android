@@ -38,6 +38,7 @@ https://github.com/mkjry/Weather-Location-Android/blob/main/app/src/main/java/co
 
  https://github.com/mkjry/Weather-Location-Android/blob/main/app/src/main/java/com/ssj/weather_location_android/view/MainActivity.kt
  
-![image](https://github.com/mkjry/Weather-Location-Android/assets/132794460/c2cf68eb-bb78-4e49-8f44-58470cd4fb62)
+![image](https://github.com/mkjry/Weather-Location-Android/assets/132794460/373d78b5-5a12-41c7-b7d2-57c61e47f53d)
+
 
 8. layout_.xml
