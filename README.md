@@ -17,7 +17,9 @@ https://github.com/mkjry/Weather-Location-Android/blob/main/app/src/main/java/co
 ![image](https://github.com/mkjry/Weather-Location-Android/assets/132794460/2fbf3667-a6ad-4217-bf6c-1d6b8cbd77c8)
 
 5. Set Up Retrofit : Retrofit instance, initialize
-   
+
+https://github.com/mkjry/Weather-Location-Android/blob/main/app/src/main/java/com/ssj/weather_location_android/network/RetrofitClient.kt
+
 ![image](https://github.com/mkjry/Weather-Location-Android/assets/132794460/affefba1-e8ae-471a-85c8-53764716e415)
 
 5. Repository : extract data from API response
