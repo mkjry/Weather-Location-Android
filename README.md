@@ -1,6 +1,8 @@
 Coding procedure (Retrofit + live data + Kotlin)
 
 1. Dependency : Retrofit, LiveData and ViewModel
+
+https://github.com/mkjry/Weather-Location-Android/blob/main/app/build.gradle.kts
    
 2. Data class : Data model for API response
    
