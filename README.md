@@ -1,7 +1,8 @@
 Coding procedure (Retrofit + live data + Kotlin)
 
 1. Dependency : Retrofit, LiveData and ViewModel
-2. Data class : Data model for API response
+   
+3. Data class : Data model for API response
    ![image](https://github.com/mkjry/Weather-Location-Android/assets/132794460/b98c4f2e-fd13-4fed-8fc1-98c8286d88a9)
 
 4. response data type : Interface of Retrofit for return data type, name
